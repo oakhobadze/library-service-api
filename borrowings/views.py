@@ -17,8 +17,14 @@ class BorrowingListCreateView(generics.ListCreateAPIView):
 
         if user_id:
             queryset = queryset.filter(user_id=user_id)
+
         if is_active is not None:
-            queryset = queryset.filter(actual_return_date__isnull=(is_active.lower() == "true"))
+            is_active = is_active.lower() == "true"
+            if is_active:
+                queryset = queryset.filter(actual_return_date__isnull=True)
+            else:
+                queryset = queryset.filter(
+                    actual_return_date__isnull=False)
 
         return queryset
 
@@ -66,7 +72,6 @@ class BorrowingReturnView(generics.UpdateAPIView):
         if serializer.is_valid():
             serializer.save()
 
-            borrowing.book.inventory += 1
             borrowing.book.save()
 
             return Response(serializer.data)
