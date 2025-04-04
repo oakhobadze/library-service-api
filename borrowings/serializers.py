@@ -10,6 +10,7 @@ class BorrowingSerializer(serializers.ModelSerializer):
         fields = ("id", "book", "user", "borrow_date", "expected_return_date", "actual_return_date")
         read_only_fields = ("id", "actual_return_date")
 
+
     def validate_borrow_date(self, value):
         from django.utils.timezone import now
         if value < now().date():
