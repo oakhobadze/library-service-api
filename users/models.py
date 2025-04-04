@@ -28,7 +28,7 @@ class User(AbstractUser):
     password = models.CharField(max_length=128)
     is_staff = models.BooleanField(default=False)
 
-    username = None  # Отключаем стандартное поле username
+    username = None
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["first_name", "last_name"]
 

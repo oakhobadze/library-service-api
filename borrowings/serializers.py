@@ -58,13 +58,11 @@ class BorrowingReturnSerializer(serializers.ModelSerializer):
 
         actual_return_date = validated_data["actual_return_date"]
 
-        # Проверяем, что дата возврата не раньше даты займа
         if actual_return_date < instance.borrow_date:
             raise serializers.ValidationError("Return date cannot be earlier than borrow date.")
 
         instance.actual_return_date = actual_return_date
 
-        # Увеличиваем инвентарь книги только если книга еще не была возвращена
         instance.book.inventory += 1
         instance.book.save()
 

@@ -13,7 +13,6 @@ class Borrowing(models.Model):
     actual_return_date = models.DateField(null=True, blank=True)
 
     def clean(self):
-        """ Проверка корректности дат перед сохранением """
         today = now().date()
 
         if self.borrow_date and self.borrow_date < today:
@@ -26,7 +25,6 @@ class Borrowing(models.Model):
             raise ValidationError({"actual_return_date": "Actual return date must be the same or after borrow date."})
 
     def save(self, *args, **kwargs):
-        """ Вызов валидации перед сохранением """
         self.clean()
         super().save(*args, **kwargs)
 
